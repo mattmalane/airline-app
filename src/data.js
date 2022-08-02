@@ -1395,12 +1395,50 @@ const airports = [
 
 ];
 
+export const getLatLong = (airportCode) => {
+  const target = airports.find(airport => airport.code === airportCode)
+  return {
+    lat: target.lat,
+    long: target.long
+  }
+}
+
 export const getAirlineById = (id) => {
   return airlines.find(airline => airline.id === id).name
 }
 
+export const getAirlineByName = (name) => {
+  return airlines.find(airline => airline.name === name).id
+}
+
 export const getAirportByCode = (code) => {
   return airports.find(airport => airport.code === code).name
+}
+
+export const getAirportCode = (airportName) => {
+  return airports.find(airport => airport.name === airportName).code
+}
+
+export const getAirports = () => {
+  return airports.map(airport => airport.name)
+}
+
+export const getRoutesByAirport = (airport) => {
+  const airportCode = getAirportCode(airport)
+  return routes.filter(route => {
+    return route.src === airportCode || route.dest === airportCode
+  })
+}
+
+export const getRoutesByAirline = (airline) => {
+  return routes.filter(route => route.airline === getAirlineByName(airline))
+}
+
+export const getRoutesByAirlineAndAirport = (airline, airport) => {
+  const airportCode = getAirportCode(airport)
+  return getRoutesByAirline(airline).filter(route => {
+    return route.src === airportCode || route.dest === airportCode
+  })
 }
 
 export default {routes, airlines, airports};
